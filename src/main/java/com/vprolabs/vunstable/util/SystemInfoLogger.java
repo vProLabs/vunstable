@@ -1,6 +1,5 @@
 package com.vprolabs.vunstable.util;
 
-import com.vprolabs.vunstable.vUnstable;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -40,7 +39,8 @@ public class SystemInfoLogger {
             .map(World::getName)
             .toArray(String[]::new);
         
-        vUnstable.getInstance().getSchedulerManager().runTaskAsync(() -> {
+        // vAPI does not expose async scheduling; use Bukkit directly for file I/O
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             try {
                 if (!plugin.getDataFolder().exists()) {
                     plugin.getDataFolder().mkdirs();

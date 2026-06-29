@@ -16,8 +16,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
-import com.vprolabs.vunstable.scheduler.TaskScheduler;
 import org.bukkit.util.Vector;
+import xyz.vprolabs.vapi.VAPI;
 
 /**
  * StabRod - The Bedrock Digger.
@@ -72,11 +72,8 @@ public class StabRod implements RodManager.Rod {
     
     @Override
     public void activate(Location target, Player player) {
-        // Get scheduler for thread-safe operations
-        TaskScheduler scheduler = ((vUnstable) plugin).getSchedulerManager();
-        
         // Perform ALL world/block operations on the target's region thread
-        scheduler.runAtLocation(target, () -> {
+        VAPI.getInstance().getScheduler().runAtLocation(target, () -> {
             int startY = 0;
             int endY = 0;
             int count = 0;
@@ -136,12 +133,10 @@ public class StabRod implements RodManager.Rod {
         plugin.getLogger().info("[vUnstable] STAB INSTANT at X" + centerX + " Z" + centerZ + 
             " | Surface Y" + surfaceY + " to Bottom Y" + endY + " | " + count + " TNT");
         
-        TaskScheduler scheduler = ((vUnstable) plugin).getSchedulerManager();
-        
         // Visual effect at surface (optional teleport animation)
         // Must be on region thread for Folia
         if (teleportEffect && player != null) {
-            scheduler.runAtLocation(target, () -> {
+            VAPI.getInstance().getScheduler().runAtLocation(target, () -> {
                 world.spawnParticle(Particle.PORTAL, target.getX(), surfaceY + 1, target.getZ(), 
                     50, 0.5, 1, 0.5, 0.1);
                 world.playSound(target, Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 0.5f);
@@ -149,7 +144,7 @@ public class StabRod implements RodManager.Rod {
         }
         
         // Small delay for visual effect, then spawn TNT at depth
-        scheduler.runAtLocationDelayed(target, () -> {
+        VAPI.getInstance().getScheduler().runLaterAtLocation(target, () -> {
             int spawned = 0;
             for (int y = surfaceY; y >= endY; y--) {
                 // Slight random offset for natural look

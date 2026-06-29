@@ -5,6 +5,7 @@ import com.vprolabs.vunstable.rod.RodManager;
 import com.vprolabs.vunstable.util.UpdateChecker;
 import com.vprolabs.vunstable.vUnstable;
 import net.kyori.adventure.text.Component;
+import xyz.vprolabs.vapi.VAPI;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
@@ -335,7 +336,7 @@ public class RodCommand implements TabExecutor {
         
         checker.forceCheck().thenAccept(updateAvailable -> {
             // Run on main thread for Bukkit API access
-            ((vUnstable) plugin).getSchedulerManager().runTask(() -> {
+            VAPI.getInstance().getScheduler().run(() -> {
                 if (updateAvailable) {
                     String current = checker.getCurrentVersion();
                     String latest = checker.getLatestVersion();
@@ -372,7 +373,7 @@ public class RodCommand implements TabExecutor {
                 }
             });
         }).exceptionally(ex -> {
-            ((vUnstable) plugin).getSchedulerManager().runTask(() -> {
+            VAPI.getInstance().getScheduler().run(() -> {
                 sendError(sender, "Update check failed: " + ex.getMessage());
             });
             return null;

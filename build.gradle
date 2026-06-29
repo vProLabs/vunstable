@@ -18,6 +18,9 @@ dependencies {
     // Paper API only - no ProtocolLib needed
     compileOnly 'io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT'
     
+    // vAPI dependency (compileOnly - provided at runtime by plugin load order)
+    compileOnly files('../../vAPI/build/libs/vAPI-1.0.0.jar')
+    
     // Gson for JSON parsing (Modrinth API)
     implementation 'com.google.code.gson:gson:2.11.0'
 }

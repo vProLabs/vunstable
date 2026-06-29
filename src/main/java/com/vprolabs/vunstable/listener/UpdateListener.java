@@ -12,8 +12,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
-import com.vprolabs.vunstable.vUnstable;
-import com.vprolabs.vunstable.scheduler.TaskScheduler;
+import xyz.vprolabs.vapi.VAPI;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -62,8 +61,7 @@ public class UpdateListener implements Listener {
         plugin.getLogger().info("[vUnstable] Admin '" + player.getName() + "' joined - notifying of available update");
         
         // Delay notification
-        TaskScheduler scheduler = ((vUnstable) plugin).getSchedulerManager();
-        scheduler.runTaskLater(() -> {
+        VAPI.getInstance().getScheduler().runLater(() -> {
             if (!player.isOnline()) {
                 return;
             }

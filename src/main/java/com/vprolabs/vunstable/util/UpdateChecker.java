@@ -3,7 +3,7 @@ package com.vprolabs.vunstable.util;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import com.vprolabs.vunstable.vUnstable;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.BufferedReader;
@@ -50,7 +50,8 @@ public class UpdateChecker {
     public CompletableFuture<Boolean> checkForUpdates() {
         CompletableFuture<Boolean> future = new CompletableFuture<>();
         
-        vUnstable.getInstance().getSchedulerManager().runTaskAsync(() -> {
+        // vAPI does not expose async scheduling; use Bukkit directly for HTTP I/O
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             // Check if cache is still valid
             long now = System.currentTimeMillis();
             if (latestVersion != null && (now - lastCheckTime) < CACHE_DURATION_MS) {

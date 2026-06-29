@@ -13,10 +13,14 @@ import com.vprolabs.vunstable.rod.RodManager;
 import com.vprolabs.vunstable.util.ErrorHandler;
 import com.vprolabs.vunstable.util.SystemInfoLogger;
 import com.vprolabs.vunstable.util.UpdateChecker;
-import com.vprolabs.vunstable.scheduler.BukkitSchedulerManager;
-import com.vprolabs.vunstable.scheduler.FoliaSchedulerManager;
-import com.vprolabs.vunstable.scheduler.TaskScheduler;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URI;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
+import xyz.vprolabs.vapi.VAPI;
 
 /**
  * vUnstable v1.2.0 - The Ultimate Orbital Strike Cannon
@@ -37,6 +41,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class vUnstable extends JavaPlugin {
     
     private static vUnstable instance;
+    private boolean vapiInstalled = false;
     private ConfigManager configManager;
     private AsyncSpawnEngine spawnEngine;
     private RodManager rodManager;
@@ -47,21 +52,61 @@ public class vUnstable extends JavaPlugin {
     private ErrorHandler errorHandler;
     private AdminErrorNotifier adminErrorNotifier;
     private SystemInfoLogger systemInfoLogger;
-    private TaskScheduler schedulerManager;
     private static SpigotOptimizer.SpawnParameters nukeParams;
     
     @Override
+    public void onLoad() {
+        File vapiFile = new File("plugins", "vAPI.jar");
+        if (!vapiFile.exists()) {
+            getLogger().info("╔══════════════════════════════════════════╗");
+            getLogger().info("║  vAPI not found! Auto-downloading...    ║");
+            getLogger().info("╚══════════════════════════════════════════╝");
+            try {
+                HttpURLConnection conn = (HttpURLConnection) URI.create("https://www.vprolabs.xyz/api/download").toURL().openConnection();
+                conn.setInstanceFollowRedirects(true);
+                conn.setConnectTimeout(5000);
+                conn.setReadTimeout(10000);
+                try (InputStream in = conn.getInputStream();
+                     FileOutputStream out = new FileOutputStream(vapiFile)) {
+                    in.transferTo(out);
+                }
+                vapiInstalled = true;
+                getLogger().info("╔══════════════════════════════════════════╗");
+                getLogger().info("║  vAPI downloaded to plugins/vAPI.jar    ║");
+                getLogger().info("║  Server restart required to activate!   ║");
+                getLogger().info("╚══════════════════════════════════════════╝");
+            } catch (Exception e) {
+                getLogger().severe("Failed to download vAPI: " + e.getMessage());
+                getLogger().severe("Download manually: https://www.vprolabs.xyz/api/download");
+            }
+        }
+    }
+
+    @Override
     public void onEnable() {
         instance = this;
-        
+
+        // === vAPI dependency check ===
+        if (Bukkit.getPluginManager().getPlugin("vAPI") == null) {
+            getLogger().severe("╔══════════════════════════════════════════╗");
+            getLogger().severe("║  vAPI IS REQUIRED but not loaded!      ║");
+            getLogger().severe("╚══════════════════════════════════════════╝");
+            if (vapiInstalled) {
+                startRestartReminder();
+            } else {
+                getLogger().severe("Download: https://www.vprolabs.xyz/api/download");
+                getLogger().severe("Place vAPI.jar in plugins/ folder and restart.");
+            }
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
+
         // Log version
         String version = getPluginMeta().getVersion();
         getLogger().info("[vUnstable] Current version: " + version);
 
-        // Initialize TaskScheduler
-        this.schedulerManager = isFolia() ? new FoliaSchedulerManager(this) : new BukkitSchedulerManager(this);
-        getLogger().info("[vUnstable] Platform: " + schedulerManager.getPlatformName());
-        getLogger().info("[vUnstable] Scheduler: " + (isFolia() ? "Folia (Regionized)" : "Bukkit (Global Thread)"));
+        // vAPI scheduler initialized - platform detected automatically
+        getLogger().info("[vUnstable] Platform: " + VAPI.getInstance().getPlatform().getDisplayName());
         
         // Save default config
         saveDefaultConfig();
@@ -173,15 +218,6 @@ public class vUnstable extends JavaPlugin {
         getLogger().info("vUnstable v1.2.0 disabled");
     }
 
-    private boolean isFolia() {
-        try {
-            Class.forName("io.papermc.paper.threadedregions.RegionizedServer");
-            return true;
-        } catch (ClassNotFoundException e) {
-            return false;
-        }
-    }
-    
     /**
      * Starts the Modrinth update notifier that checks for updates every 2 hours.
      * Notifies console and online admins when a new version is available.
@@ -190,7 +226,7 @@ public class vUnstable extends JavaPlugin {
         // 2 hours = 20 ticks/second * 3600 seconds * 2 hours = 144000 ticks
         long checkIntervalTicks = 20L * 3600L * 2L;
         
-        schedulerManager.runTaskTimer(() -> {
+        VAPI.getInstance().getScheduler().runTimer(() -> {
             getLogger().info("[vUnstable] Running scheduled Modrinth update check...");
             
             updateChecker.checkForUpdates().thenAccept(updateAvailable -> {
@@ -277,16 +313,22 @@ public class vUnstable extends JavaPlugin {
         return errorHandler;
     }
 
-    public TaskScheduler getSchedulerManager() {
-        return schedulerManager;
-    }
-    
     /**
      * Gets the optimized spawn parameters for Nuke Rod.
      * @return SpawnParameters containing ratePerTick and totalTicks
      */
     public static SpigotOptimizer.SpawnParameters getNukeParams() {
         return nukeParams;
+    }
+
+    private void startRestartReminder() {
+        Bukkit.getScheduler().runTaskTimer(this, () -> {
+            String msg = "§8[§cvPlugins§8] §evAPI has been installed. §cServer requires a restart §eto initialize it.";
+            Bukkit.getOnlinePlayers().stream()
+                .filter(p -> p.isOp() || p.hasPermission("vplugind.admin"))
+                .forEach(p -> p.sendMessage(msg));
+            getLogger().warning("vAPI has been installed. Server requires a restart to initialize it.");
+        }, 0L, 6000L);
     }
 }
 

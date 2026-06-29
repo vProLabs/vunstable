@@ -14,7 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
-import com.vprolabs.vunstable.scheduler.TaskScheduler;
+import xyz.vprolabs.vapi.VAPI;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -154,8 +154,6 @@ public class NukeRod implements RodManager.Rod {
                 " | Active: " + activeNukeCount.get() + "/" + maxConcurrent + 
                 " | Queue: " + nukeQueue.size());
             
-            TaskScheduler scheduler = ((vUnstable) plugin).getSchedulerManager();
-            
             // Spawn all rings with ground-based sync
             for (int ring = 0; ring < rings; ring++) {
                 double radius = minRadius + (ring * radiusStep);
@@ -163,7 +161,7 @@ public class NukeRod implements RodManager.Rod {
                 final int finalRing = ring;
                 final int ringNum = ring + 1;
                 
-                scheduler.runTaskLater(() -> {
+                VAPI.getInstance().getScheduler().runLater(() -> {
                     try {
                         spawnEngine.queueRingSpawnsSync(
                             centerX, centerZ, spawnY, radius, tntPerRing,
@@ -183,7 +181,7 @@ public class NukeRod implements RodManager.Rod {
             }
             
             // Schedule cleanup after max time
-            scheduler.runTaskLater(() -> {
+            VAPI.getInstance().getScheduler().runLater(() -> {
                 activeNukeCount.decrementAndGet();
                 
                 // Clean up tracking
@@ -212,8 +210,7 @@ public class NukeRod implements RodManager.Rod {
     }
     
     private void processQueue() {
-        TaskScheduler scheduler = ((vUnstable) plugin).getSchedulerManager();
-        scheduler.runTaskLater(() -> {
+        VAPI.getInstance().getScheduler().runLater(() -> {
             NukeRequest next = nukeQueue.poll();
             if (next != null) {
                 plugin.getLogger().info("[vUnstable] Processing queued nuke. Remaining in queue: " + nukeQueue.size());

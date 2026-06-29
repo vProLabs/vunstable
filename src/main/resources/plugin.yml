@@ -3,10 +3,10 @@ version: '${version}'
 main: com.vprolabs.vunstable.vUnstable
 api-version: '1.21'
 folia-supported: true
+load: STARTUP
+softdepend: [vAPI]
 author: vProLabs
 website: https://vprolabs.xyz
-
-softdepend: []
 
 commands:
   vunstable:

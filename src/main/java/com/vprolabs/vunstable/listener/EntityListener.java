@@ -12,7 +12,7 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.java.JavaPlugin;
-import com.vprolabs.vunstable.scheduler.TaskScheduler;
+import xyz.vprolabs.vapi.VAPI;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -40,11 +40,8 @@ public class EntityListener implements Listener {
     public static final String META_NUKE_RING_INDEX = "vunstable_nuke_ring_index";
     public static final String META_NUKE_PENDING_EXPLOSION = "vunstable_nuke_pending";
     
-    private final TaskScheduler scheduler;
-    
     public EntityListener(JavaPlugin plugin) {
         this.plugin = plugin;
-        this.scheduler = ((vUnstable) plugin).getSchedulerManager();
     }
     
     /**
@@ -150,7 +147,7 @@ public class EntityListener implements Listener {
         // Use the first block's location to determine region for Folia scheduling
         if (!event.blockList().isEmpty()) {
             Block firstBlock = event.blockList().get(0);
-            scheduler.runAtLocation(firstBlock.getLocation(), () -> {
+            VAPI.getInstance().getScheduler().runAtLocation(firstBlock.getLocation(), () -> {
                 for (Block block : event.blockList()) {
                     if (block.hasMetadata(META_NUKE_EXPLOSION)) {
                         block.setType(org.bukkit.Material.AIR, false);

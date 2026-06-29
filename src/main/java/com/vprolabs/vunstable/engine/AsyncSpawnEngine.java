@@ -2,8 +2,9 @@ package com.vprolabs.vunstable.engine;
 
 import com.vprolabs.vunstable.config.ConfigManager;
 import com.vprolabs.vunstable.listener.EntityListener;
-import com.vprolabs.vunstable.scheduler.ScheduledTask;
 import com.vprolabs.vunstable.vUnstable;
+import xyz.vprolabs.vapi.VAPI;
+import xyz.vprolabs.vapi.scheduler.ScheduledTask;
 import org.bukkit.Location;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -34,7 +35,6 @@ public class AsyncSpawnEngine {
     private final ConfigManager config;
     private final Deque<SpawnRequest> spawnQueue;
     private EntityListener entityListener;
-    private final boolean isFolia;
     
     // Ground-based sync tracking
     // nukeId -> Set of TNT UUIDs that haven't landed yet
@@ -57,18 +57,8 @@ public class AsyncSpawnEngine {
         this.plugin = plugin;
         this.config = ConfigManager.getInstance();
         this.spawnQueue = new ArrayDeque<>();
-        this.isFolia = detectFolia();
         initNMS();
         startSpawnTask();
-    }
-    
-    private boolean detectFolia() {
-        try {
-            Class.forName("io.papermc.paper.threadedregions.RegionizedServer");
-            return true;
-        } catch (ClassNotFoundException e) {
-            return false;
-        }
     }
     
     public void setEntityListener(EntityListener listener) {
@@ -128,7 +118,7 @@ public class AsyncSpawnEngine {
         }
         
         final int spawnRate = rate;
-        vUnstable.getInstance().getSchedulerManager().runTaskTimer(() -> processQueue(spawnRate), 0L, 1L);
+        VAPI.getInstance().getScheduler().runTimer(() -> processQueue(spawnRate), 0L, 1L);
     }
     
     private void processQueue(int max) {
@@ -151,7 +141,7 @@ public class AsyncSpawnEngine {
     }
     
     private void spawnTNT(SpawnRequest req) {
-        vUnstable.getInstance().getSchedulerManager().runAtLocation(req.location, () -> {
+        VAPI.getInstance().getScheduler().runAtLocation(req.location, () -> {
             // Try NMS first
             if (nmsAvailable) {
                 try {
@@ -266,7 +256,7 @@ public class AsyncSpawnEngine {
         final ScheduledTask[] taskHolder = new ScheduledTask[1];
         final boolean[] wasFailsafe = { false };
         
-        taskHolder[0] = vUnstable.getInstance().getSchedulerManager().runAtEntityTimer(tnt, () -> {
+        taskHolder[0] = VAPI.getInstance().getScheduler().runTimerAtEntity(tnt, () -> {
             if (nukeId == null) return;
             
             // Ground detection - freeze when landed
@@ -430,7 +420,7 @@ public class AsyncSpawnEngine {
     
     public void queueInstantSpawn(Location location, Vector velocity, int fuseTicks, 
                                    float yield, boolean isNuke, boolean isStab) {
-        vUnstable.getInstance().getSchedulerManager().runAtLocation(location, () -> {
+        VAPI.getInstance().getScheduler().runAtLocation(location, () -> {
             try {
                 TNTPrimed tnt = location.getWorld().spawn(location, TNTPrimed.class, entity -> {
                     entity.setVelocity(velocity);

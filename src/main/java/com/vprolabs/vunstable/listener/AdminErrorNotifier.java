@@ -11,9 +11,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import com.vprolabs.vunstable.vUnstable;
-
-import java.util.List;
+import xyz.vprolabs.vapi.VAPI;
+ 
+ import java.util.List;
 
 /**
  * AdminErrorNotifier - Notifies admins of errors when they join.
@@ -47,7 +47,7 @@ public class AdminErrorNotifier implements Listener {
         int errorCount = errors.size();
         
         // Send notification after a short delay to ensure player is fully joined
-        vUnstable.getInstance().getSchedulerManager().runTaskLater(() -> {
+        VAPI.getInstance().getScheduler().runLater(() -> {
             if (!player.isOnline()) return;
             
             // Header

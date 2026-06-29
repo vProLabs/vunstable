@@ -2,57 +2,70 @@ vProLabs General License
 
 Copyright (c) 2026 vProLabs (https://vprolabs.xyz)
 
+================================================================================
+IMPORTANT NOTICE: CREATOR COMMERCIAL RIGHTS
+================================================================================
+
+The ORIGINAL AUTHOR(S) defined below retain EXCLUSIVE COMMERCIAL RIGHTS to this
+Software. This means ONLY the creator(s) of this code may monetize, sell, or
+commercially exploit it. ANY OTHER PERSON OR ENTITY is STRICTLY PROHIBITED from
+commercial use. This license does NOT restrict the Original Author(s) in any way.
+
+================================================================================
+
 1. DEFINITIONS
-   - "Original Author(s)": The creator(s) of vProLabs, including but not limited to
-     the entity operating under the name vProLabs and its authorized representatives.
+   - "Original Author(s)": The creator(s), owner(s), and copyright holder(s) of
+     this Software, specifically the entity operating under the name vProLabs
+     and its authorized representatives. ONLY these parties have commercial rights.
+   - "User(s)": Any person or entity obtaining a copy of this Software who is NOT
+     the Original Author(s). Users have NO commercial rights whatsoever.
    - "Software": All code, documentation, assets, and materials distributed under
      this license.
-   - "Derivative Work": Any modification, adaptation, translation, or creation based
-     upon the Software, including but not limited to forks, remakes, ports, plugins,
-     addons, or any work that incorporates substantial portions of the Software.
+   - "Derivative Work": Any modification, adaptation, translation, or creation
+     based upon the Software, including forks, remakes, ports, plugins, addons,
+     or any work incorporating substantial portions of the Software.
 
-2. GRANT OF RIGHTS TO ORIGINAL AUTHORS
-   The Original Author(s) retain all rights to the Software, including but not limited
-   to the exclusive right to:
-   - Use, modify, distribute, and sublicense the Software in any manner;
-   - Monetize, sell, or commercially exploit the Software;
+2. CREATOR RIGHTS (EXCLUSIVE AND UNLIMITED)
+   The Original Author(s) retain ALL RIGHTS to the Software, INCLUDING BUT NOT
+   LIMITED TO:
+   - Use, modify, distribute, and sublicense the Software in ANY manner;
+   - Monetize, sell, license for profit, and commercially exploit the Software;
    - Create and monetize derivative works based on the Software;
-   - License the Software under different terms to third parties.
+   - License the Software under different terms to third parties;
+   - Distribute through commercial channels, marketplaces (including Modrinth),
+     and charge any price for the Software.
 
-3. GRANT OF RIGHTS TO USERS (NON-COMMERCIAL)
-   Permission is hereby granted, free of charge, to any person obtaining a copy of
-   this Software, to use, copy, modify, and distribute the Software subject to the
-   following conditions:
+   THE ORIGINAL AUTHOR(S) ARE NOT BOUND BY ANY RESTRICTIONS IN THIS LICENSE.
+   THIS LICENSE APPLIES TO USERS, NOT THE CREATOR(S).
 
-   a) ATTRIBUTION: You must give appropriate credit to vProLabs, provide a link to
-      the original project, and indicate if changes were made. You may do so in any
-      reasonable manner, but not in any way that suggests vProLabs endorses you or
-      your use.
+3. USER RIGHTS (NON-COMMERCIAL ONLY)
+   Permission is granted to any User obtaining a copy of this Software to use,
+   copy, modify, and distribute the Software ONLY under these conditions:
 
-   b) NON-COMMERCIAL USE: This Software may not be used for commercial purposes.
-      You may not sell, monetize, or otherwise commercially exploit this Software
-      or any derivative works you create based upon it.
+   a) ATTRIBUTION: Credit vProLabs, provide a link to the original project,
+      and indicate if changes were made. Do not suggest vProLabs endorses you.
 
-   c) SHARE ALIKE: If you remix, transform, or build upon the Software, you must
-      distribute your contributions under the same license terms as this license.
+   b) NON-COMMERCIAL USE (STRICT): Users may NOT use this Software for ANY
+      commercial purpose. This includes but is not limited to:
+      - Selling, licensing for profit, or monetizing the Software;
+      - Using the Software in a commercial server that generates revenue;
+      - Including the Software in a paid product or service;
+      - Accepting donations or tips in exchange for the Software or its use.
 
-   d) NO COMPETING WORKS: You may not create derivative works that:
-      - Compete with the original Software in the marketplace;
-      - Are designed to disparage, damage, or undermine the reputation of the
-        original Software or its Original Author(s);
-      - Mislead users into believing they are the original Software.
+   c) SHARE ALIKE: Derivative works must be distributed under identical terms.
 
-4. DERIVATIVE WORKS RESTRICTIONS
-   Any Derivative Work created by a party other than the Original Author(s):
-   - Is STRICTLY PROHIBITED from any form of monetization;
-   - May not be sold, licensed for profit, or used to generate revenue;
-   - May not be distributed through commercial channels or marketplaces;
-   - Must prominently display that it is unofficial and not affiliated with vProLabs;
-   - Must comply with all terms of this license, including the Non-Commercial clause.
+   d) NO COMPETING WORKS: Derivatives may not compete with the original Software
+      or mislead users into believing they are the original.
 
-5. COMMERCIAL LICENSING
-   For commercial use rights, including the right to monetize derivative works,
-   contact the Original Author(s) at the project repository or official website.
+4. DERIVATIVE WORKS (USERS ONLY)
+   Any Derivative Work created by a User:
+   - Is STRICTLY PROHIBITED from ANY monetization;
+   - May not be sold, licensed for profit, or generate revenue;
+   - Must display that it is unofficial and not affiliated with vProLabs;
+   - Must comply with all terms of this license.
+
+5. COMMERCIAL LICENSING (FOR USERS ONLY)
+   Users seeking commercial rights must contact the Original Author(s).
    Commercial licensing is granted solely at the discretion of vProLabs.
 
 6. NO WARRANTY
@@ -65,14 +78,19 @@ Copyright (c) 2026 vProLabs (https://vprolabs.xyz)
    SOFTWARE.
 
 7. TERMINATION
-   This license automatically terminates if you fail to comply with any of its terms.
-   Upon termination, you must cease all use and distribution of the Software and
-   any derivative works.
+   This license automatically terminates if you fail to comply with any term.
+   Upon termination, cease all use and distribution of the Software.
 
 8. MISCELLANEOUS
-   - You may not claim authorship of the original work;
-   - You may not remove or alter copyright notices;
-   - You may not use this Software for malicious purposes;
-   - You may not redistribute without proper attribution;
-   - This license does not grant permission to use trade names, trademarks,
-     service marks, or product names of vProLabs.
+   - Users may not claim authorship of the original work;
+   - Users may not remove or alter copyright notices;
+   - Users may not use this Software for malicious purposes;
+   - Users may not redistribute without proper attribution;
+   - This license does not grant permission to use vProLabs trademarks.
+
+================================================================================
+SUMMARY FOR USERS:
+- You CAN: Use, modify, share for FREE (non-commercially)
+- You CANNOT: Sell, monetize, or commercially exploit this code
+- The CREATOR keeps ALL commercial rights and can do whatever they want
+================================================================================
